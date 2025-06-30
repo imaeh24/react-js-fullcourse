@@ -1,17 +1,30 @@
-import TodoCard from "./TodoCard"
+import { TodoCard } from "./TodoCard";
 
 export function TodoList(props) {
+    const { todos, selectedTab } = props
 
-    const {todos} = props
-    const tab = 'All'
+
+    const filterTodosList = selectedTab === 'All' ?
+        todos :
+        selectedTab === 'Completed' ?
+            todos.filter(val => val.complete) :
+            todos.filter(val => !val.complete)
 
     return (
         <>
-            {todos.map((todo, todoIndex) => {
+            {filterTodosList.map((todo, todoIndex) => {
+                const tempTodoIndex = todos.findIndex(val => val.input == todo.input)
+                console.log(tempTodoIndex)
+                
                 return (
-                    <TodoCard key={todoIndex} todoIndex = {todoIndex} {...props} />
+                    <TodoCard
+                        key={todoIndex}
+                        {...props}
+                        todoIndex={tempTodoIndex}
+                        todo={todo} />
                 )
             })}
+
         </>
     )
 }
